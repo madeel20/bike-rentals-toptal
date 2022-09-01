@@ -72,11 +72,12 @@ export default function LoginPage() {
           },
         ]}
       >
-        <Input
+        <Input.Password
           prefix={<LockOutlined className="site-form-item-icon" />}
           type="password"
           placeholder="Password"
           size="large"
+
         />
       </Form.Item>
 
@@ -84,7 +85,7 @@ export default function LoginPage() {
         <Button loading={loading} type="primary" htmlType="submit" className="login-form-button">
           Log in
         </Button>{" "}
-        &nbsp; &nbsp; Or <Button onClick={()=>history.push('/signup')} disabled={loading} type="link">register now!</Button>
+        &nbsp; &nbsp; Or <Button onClick={()=>history.push('/signup')} disabled={loading} type="link"> Sign Up</Button>
       </Form.Item>
     </Form>
   );

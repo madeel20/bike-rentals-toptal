@@ -22,10 +22,14 @@ export default function SignUpPage() {
     auth
       .createUserWithEmailAndPassword(values.email, values.password)
       .then((res: firebase.auth.UserCredential) => {
-        res.user?.updateProfile({
-          displayName: values.fullname,
-        });
-        message.success("SignUp Successful!");
+        res.user
+          ?.updateProfile({
+            displayName: values.fullname,
+          })
+          .then((res) => {
+            history.push("/");
+            message.success("SignUp Successful!");
+          });
       })
       .catch((err) => {
         message.error(err?.message);
@@ -79,7 +83,7 @@ export default function SignUpPage() {
           },
         ]}
       >
-        <Input
+        <Input.Password
           prefix={<LockOutlined className="site-form-item-icon" />}
           type="password"
           placeholder="Password"

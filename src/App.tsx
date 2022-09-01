@@ -1,4 +1,4 @@
-import React,{ useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Redirect,
@@ -8,8 +8,8 @@ import {
 import CHeader from "./components/CHeader/CHeader";
 import LoginPage from "./pages/login/Login";
 import { auth, firestore } from "./firebase";
-import firebase from 'firebase';
-import { Layout } from "antd";
+import firebase from "firebase";
+import { Layout, Spin } from "antd";
 import styles from "./App.module.css";
 import Dashboard from "./pages/user/dashboard/Dashboard";
 import AdminDashboard from "./pages/admin/dashboard/AdminDashboard";
@@ -20,14 +20,13 @@ import SignUpPage from "./pages/login/Signup";
 const { Content } = Layout;
 
 function App() {
-  const [user, setUser] = useState<firebase.User | null>(null);
+  const [user, setUser] = useState<firebase.User | null | boolean>(null);
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     auth.onAuthStateChanged((userAuth) => {
-    setUser(null);
+      setUser(null);
       if (userAuth) {
-       
         firestore
           .collection("admins")
           .doc(userAuth.uid)
@@ -37,15 +36,19 @@ function App() {
             setUser(userAuth);
           });
       } else {
-        setUser(null);
+        setUser(false);
         setIsAdmin(false);
       }
     });
   }, []);
 
-  // if (user === null) {
-  //   return null;
-  // }
+  if (user === null) {
+    return (
+      <div className="d-flex w-100 min-vh-100 align-items-center justify-content-center">
+        <Spin size="large" />
+      </div>
+    );
+  }
   return (
     <Router>
       <Layout>
@@ -62,8 +65,8 @@ function App() {
             {user &&
               (isAdmin ? (
                 <>
-                <Route exact path="/" component={AdminDashboard} />
-                {/* <Route exact path="/reports" component={Reports} /> */}
+                  <Route exact path="/" component={AdminDashboard} />
+                  {/* <Route exact path="/reports" component={Reports} /> */}
                 </>
               ) : (
                 <>
