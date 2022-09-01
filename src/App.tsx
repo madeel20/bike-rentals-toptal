@@ -15,6 +15,7 @@ import Dashboard from "./pages/user/dashboard/Dashboard";
 import AdminDashboard from "./pages/admin/dashboard/AdminDashboard";
 import AdminLogin from "./pages/login/AdminLogin";
 import CaloriesPerDay from "./pages/user/caloriesPerDay/CaloriesPerDay";
+import SignUpPage from "./pages/login/Signup";
 // import Reports from "./pages/admin/reports/Reports";
 const { Content } = Layout;
 
@@ -54,6 +55,7 @@ function App() {
             {!auth.currentUser && (
               <>
                 <Route exact path="/" component={LoginPage} />
+                <Route exact path="/signup" component={SignUpPage} />
                 <Route exact path="/admin-login" component={AdminLogin} />
               </>
             )}

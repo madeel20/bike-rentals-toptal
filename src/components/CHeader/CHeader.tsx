@@ -1,4 +1,4 @@
-import { Avatar, Col, Dropdown, Layout, Menu } from "antd";
+import { Avatar, Col, Dropdown, Layout, Menu, Row } from "antd";
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { Typography } from "antd";
@@ -29,13 +29,14 @@ function CHeader() {
          React Bike Rentals
         </Title>
       </Link>
-      <Col>
+      <Row align="middle">
+      <Typography style={{color:'white', marginRight:20}}>{auth.currentUser?.displayName}</Typography>
         {auth.currentUser && (
           <Dropdown overlay={menu} placement="bottomLeft" arrow>
             <Avatar size="large" icon={<UserOutlined />} />
           </Dropdown>
         )}
-      </Col>
+      </Row>
     </Header>
   );
 }

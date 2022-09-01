@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Form, Input, Button, Row, message } from "antd";
 import { Link, useHistory } from "react-router-dom";
-import { auth, googleProvider } from "../../firebase";
+import { auth, firestore, googleProvider } from "../../firebase";
 import firebase from "firebase";
 import { Typography } from "antd";
 import classes from "./login.module.css";
@@ -9,32 +9,29 @@ import { LockOutlined, UserOutlined } from "@ant-design/icons";
 
 const { Title } = Typography;
 
-export default function LoginPage() {
+export default function SignUpPage() {
   const history = useHistory();
   const [loading, setLoading] = useState<boolean>(false);
 
-  const handleSubmit = () => {
-    auth.signInWithPopup(googleProvider);
-  };
-
-  const onFinish = (values: { email: string; password: string }) => {
+  const onFinish = (values: {
+    email: string;
+    password: string;
+    fullname: string;
+  }) => {
     setLoading(true);
     auth
-      .signInWithEmailAndPassword(values.email, values.password)
+      .createUserWithEmailAndPassword(values.email, values.password)
       .then((res: firebase.auth.UserCredential) => {
-        message.success("Login Successful!");
+        res.user?.updateProfile({
+          displayName: values.fullname,
+        });
+        message.success("SignUp Successful!");
       })
       .catch((err) => {
         message.error(err?.message);
       })
       .finally(() => setLoading(false));
   };
-
-  const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
-  };
-
-  // get redux state
 
   return (
     <Form
@@ -44,8 +41,18 @@ export default function LoginPage() {
       onFinish={onFinish}
       style={{ width: 350 }}
     >
-      <Title>Sign In</Title>
+      <Title>Sign UP</Title>
 
+      <Form.Item
+        name="fullname"
+        rules={[{ required: true, message: "Please input your name!" }]}
+      >
+        <Input
+          size="large"
+          prefix={<UserOutlined className="site-form-item-icon" />}
+          placeholder="Full Name"
+        />
+      </Form.Item>
       <Form.Item
         name="email"
         rules={[
@@ -81,10 +88,22 @@ export default function LoginPage() {
       </Form.Item>
 
       <Form.Item>
-        <Button loading={loading} type="primary" htmlType="submit" className="login-form-button">
-          Log in
+        <Button
+          loading={loading}
+          type="primary"
+          htmlType="submit"
+          className="login-form-button"
+        >
+          Sign Up
         </Button>{" "}
-        &nbsp; &nbsp; Or <Button onClick={()=>history.push('/signup')} disabled={loading} type="link">register now!</Button>
+        &nbsp; &nbsp; Or{" "}
+        <Button
+          onClick={() => history.push("/")}
+          disabled={loading}
+          type="link"
+        >
+          Login
+        </Button>
       </Form.Item>
     </Form>
   );
