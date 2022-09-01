@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import classes from "./EditFood.module.css";
-import { Modal, Button, message } from "antd";
+import { Modal, message } from "antd";
 import { auth, firestore } from "../../../../firebase";
-import AddFoodForm from "../../../user/dashboard/AddFood/AddFoodForm";
+import AddFoodForm from "../../../user/dashboard/ReservationForm/ReservationForm";
 
 const EditFood = ({ getFoodsList, food, onClose }:any) => {
   const [loading, setLoading] = useState(false);
@@ -41,12 +41,12 @@ const EditFood = ({ getFoodsList, food, onClose }:any) => {
           onOk={handleOk}
           onCancel={handleCancel}
         >
-            <AddFoodForm
-              isModalVisible={food}
-              initialValues={food}
+            {/* <AddFoodForm
+              // isModalVisible={food}
+              // initialValues={food}
               loading={loading}
               onSubmit={onSubmit}
-            />
+            /> */}
         </Modal>
     </>
   );

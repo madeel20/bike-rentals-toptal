@@ -1,20 +1,22 @@
 import { SearchOutlined } from "@ant-design/icons";
-import { InputRef, Rate } from "antd";
+import { InputRef, Rate, Row } from "antd";
 import { Button, Input, Space, Table } from "antd";
 import type { ColumnsType, ColumnType } from "antd/es/table";
 import type { FilterConfirmProps } from "antd/es/table/interface";
 import React, { useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
 import Bike from "../../../../interfaces/Bike";
+import ReservationForm from "../ReservationForm/ReservationForm";
 
 type DataIndex = keyof Bike;
 
 interface BikesListProps {
   loading: boolean;
   bikesList: Bike[];
+  onReservationAdd: ()=>any
 }
 
-const BikesList: React.FC<BikesListProps> = ({ loading, bikesList }) => {
+const BikesList: React.FC<BikesListProps> = ({ loading, bikesList, onReservationAdd }) => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef<InputRef>(null);
@@ -34,9 +36,7 @@ const BikesList: React.FC<BikesListProps> = ({ loading, bikesList }) => {
     setSearchText("");
   };
 
-  const getColumnSearchProps = (
-    dataIndex: DataIndex
-  ): ColumnType<Bike> => ({
+  const getColumnSearchProps = (dataIndex: DataIndex): ColumnType<Bike> => ({
     filterDropdown: ({
       setSelectedKeys,
       selectedKeys,
@@ -145,15 +145,27 @@ const BikesList: React.FC<BikesListProps> = ({ loading, bikesList }) => {
       sortDirections: ["descend", "ascend"],
       render: (rating: number) => {
         return (
-          <>
+          <Row style={{width:140}}>
             <Rate disabled defaultValue={Number(rating)} />
-          </>
+          </Row>
         );
       },
     },
+    {
+      title: "",
+      key: "resrevations",
+      render: (key, record) => <ReservationForm callback={onReservationAdd} bikeId={record?.id} />,
+    },
   ];
 
-  return <Table rowKey={(record)=>record?.id} columns={columns} dataSource={bikesList} />;
+  return (
+    <Table
+      rowKey={(record) => record?.id}
+      columns={columns}
+      dataSource={bikesList}
+      loading={loading}
+    />
+  );
 };
 
 export default BikesList;

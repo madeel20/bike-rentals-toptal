@@ -1,10 +1,19 @@
 import React, { useState } from "react";
-import classes from "./AddFood.module.css";
+import classes from "./AddReservation.module.css";
 import { Modal, Button, message } from "antd";
-import AddFoodForm from "./AddFoodForm";
+import CForm from "./CForm";
 import { auth, firestore } from "../../../../firebase";
+import Reservation from "../../../../interfaces/Reservation";
 
-const AddFood = ({ getFoodsList }:any) => {
+interface AddReservationInterface {
+  callback?: () => any;
+  bikeId?: string;
+}
+
+const ReservationForm = ({
+ callback,
+  bikeId,
+}: AddReservationInterface) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -20,19 +29,22 @@ const AddFood = ({ getFoodsList }:any) => {
     !loading && setIsModalVisible(false);
   };
 
-  const onSubmit = (values:object) => {
+  const onSubmit = (values: any) => {
+   
+    let reservation: Reservation = {
+      uid: auth.currentUser?.uid!,
+      email: auth?.currentUser?.email!,
+      startTime: values?.date[0].toDate(),
+      endTime: values?.date[0].toDate(),
+    };
+
     setLoading(true);
     firestore
-      .collection("foods")
-      .add({
-        uid: auth.currentUser?.uid,
-        email: auth?.currentUser?.email,
-        ...values,
-        // date: values?.date?.toDate(),
-      })
+      .collection("Reservations")
+      .add(reservation)
       .then((res) => {
-        message.success("Food Added!");
-        getFoodsList();
+        message.success("Reservation Added!");
+        callback && callback();
         setIsModalVisible(false);
       })
       .finally(() => setLoading(false));
@@ -40,19 +52,19 @@ const AddFood = ({ getFoodsList }:any) => {
 
   return (
     <>
-      <Button type="primary" onClick={showModal}>
-        Add Food
+      <Button type="link" onClick={showModal}>
+        Create Reservation
       </Button>
       {isModalVisible && (
         <Modal
           footer={null}
-          title="Add Food"
+          title="Add Reservation"
           visible={isModalVisible}
           onOk={handleOk}
           onCancel={handleCancel}
         >
           {isModalVisible && (
-            <AddFoodForm
+            <CForm
               isModalVisible={isModalVisible}
               loading={loading}
               onSubmit={onSubmit}
@@ -64,4 +76,4 @@ const AddFood = ({ getFoodsList }:any) => {
   );
 };
 
-export default AddFood;
+export default ReservationForm;

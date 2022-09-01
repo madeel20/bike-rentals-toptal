@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { auth, firestore } from "../../../firebase";
 // import { getFormattedDate } from "../../../src/utils/helpers";
-import AddFood from "./AddFood/AddFood";
 import classes from "./Dashboard.module.css";
 import BikesList from "./BikesList/BikesList";
 import Bike from "../../../interfaces/Bike";
@@ -32,6 +31,10 @@ const Dashboard = () => {
       .finally(() => setLoading(false));
   };
 
+  const onReservationAdd = () =>{
+    getBikesList();
+  }
+
   return (
     <div className={classes.Dashboard}>
       <Row>
@@ -46,7 +49,7 @@ const Dashboard = () => {
       </Row>
       <Row className="mt-4">
         <Col span={24}>
-          <BikesList loading={loading} bikesList={bikesList} />
+          <BikesList onReservationAdd={onReservationAdd} loading={loading} bikesList={bikesList} />
         </Col>
       </Row>
     </div>
