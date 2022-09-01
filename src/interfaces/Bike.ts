@@ -1,4 +1,5 @@
 interface Bike {
+    id: string,
     model: string,
     location: string,
     available: boolean,

@@ -5,73 +5,48 @@ import { auth, firestore } from "../../../firebase";
 // import { getFormattedDate } from "../../../src/utils/helpers";
 import AddFood from "./AddFood/AddFood";
 import classes from "./Dashboard.module.css";
-import FoodsList from "./FoodsList/FoodsList";
-const { RangePicker } = DatePicker;
-
+import BikesList from "./BikesList/BikesList";
+import Bike from "../../../interfaces/Bike";
 const { Title } = Typography;
+
 const Dashboard = () => {
-  const [foodsList, setFoodsList] = useState([]);
+  const [bikesList, setBikesList] = useState<Bike[]>([]);
   const [loading, setLoading] = useState(false);
   const history = useHistory();
+
   useEffect(() => {
-    getFoodsList();
+    getBikesList();
   }, []);
 
-  const getFoodsList = (dates = null) => {
-    if(!auth.currentUser?.uid) return;
-
+  const getBikesList = () => {
     setLoading(true);
-    // if (!dates)
-    //   firestore
-    //     .collection("foods")
-    //     .where("uid", "==", auth.currentUser?.uid)
-    //     .get()
-    //     .then((res) => {
-    //       setFoodsList(
-    //         res.docs.map((each) => ({ id: each.id, ...each.data() }))
-    //       );
-    //     })
-    //     .finally(() => setLoading(false));
-    // else {
-    //   let startDate = new Date(getFormattedDate(dates[0]));
-    //   let endDate = new Date(getFormattedDate(dates[1]));
-    //   firestore
-    //     .collection("foods")
-    //     .where("uid", "==", auth.currentUser?.uid)
-    //     .where("date", ">=", startDate)
-    //     .where("date", "<=", endDate)
-    //     .get()
-    //     .then((res) => {
-    //       setFoodsList(
-    //         res.docs.map((each) => ({ id: each.id, ...each.data() }))
-    //       );
-    //     })
-    //     .finally(() => setLoading(false));
-    
+    firestore
+      .collection("Bikes")
+      .where("available", "==", true)
+      .get()
+      .then((res) => {
+        setBikesList(
+          res.docs.map((each) => ({ id: each.id, ...each.data() })) as Bike[]
+        );
+      })
+      .finally(() => setLoading(false));
   };
 
   return (
     <div className={classes.Dashboard}>
       <Row>
         <Col span={19}>
-          <Title level={4}>Calories Per Day</Title>
+          <Title level={4}>Bikes Available</Title>
         </Col>
         <Col style={{ display: "flex", justifyContent: "end" }} span={5}>
-          <AddFood getFoodsList={getFoodsList} />
-        </Col>
-      </Row>
-      <Row justify="space-between" className="mt-3">
-        <Col>
-          {" "}
-          {/* <RangePicker onChange={getFoodsList} /> */}
-        </Col>
-        <Col >
-           <Button onClick={()=>history.push('/calories-per-day')} type="link">Calories per day</Button>
+          <Button onClick={() => history.push("/my-reservations")} type="link">
+            My Reservations
+          </Button>
         </Col>
       </Row>
       <Row className="mt-4">
         <Col span={24}>
-          <FoodsList loading={loading} foodsList={foodsList} />
+          <BikesList loading={loading} bikesList={bikesList} />
         </Col>
       </Row>
     </div>
