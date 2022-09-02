@@ -35,7 +35,7 @@ const ReservationForm = ({
       uid: auth.currentUser?.uid!,
       email: auth?.currentUser?.email!,
       startTime: values?.date[0].toDate(),
-      endTime: values?.date[0].toDate(),
+      endTime: values?.date[1].toDate(),
     };
 
     setLoading(true);

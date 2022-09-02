@@ -16,6 +16,7 @@ import AdminDashboard from "./pages/admin/dashboard/AdminDashboard";
 import AdminLogin from "./pages/login/AdminLogin";
 import CaloriesPerDay from "./pages/user/caloriesPerDay/CaloriesPerDay";
 import SignUpPage from "./pages/login/Signup";
+import MyReservations from "./pages/user/MyReservations/MyReservations";
 // import Reports from "./pages/admin/reports/Reports";
 const { Content } = Layout;
 
@@ -66,16 +67,12 @@ function App() {
               (isAdmin ? (
                 <>
                   <Route exact path="/" component={AdminDashboard} />
-                  {/* <Route exact path="/reports" component={Reports} /> */}
                 </>
               ) : (
                 <>
                   <Route exact path="/" component={Dashboard} />
-                  <Route
-                    exact
-                    path="/calories-per-day"
-                    component={CaloriesPerDay}
-                  />
+                  <Route exact path="/my-reservations" component={MyReservations} />
+
                 </>
               ))}
             <Redirect path="*" to="/" />
