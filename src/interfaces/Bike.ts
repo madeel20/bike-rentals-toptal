@@ -9,6 +9,7 @@ interface Bike {
     available: boolean,
     ratings: rating[],
     color: string,
+    isDeleted?: boolean
 }
 
 export default Bike;

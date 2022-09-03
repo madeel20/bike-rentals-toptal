@@ -1,5 +1,5 @@
 import { SearchOutlined } from "@ant-design/icons";
-import { Checkbox, InputRef, Rate, Row } from "antd";
+import { Checkbox, InputRef, Popconfirm, Rate, Row } from "antd";
 import { Button, Input, Space, Table } from "antd";
 import type { ColumnsType, ColumnType } from "antd/es/table";
 import type { FilterConfirmProps } from "antd/es/table/interface";
@@ -24,6 +24,7 @@ interface BikesListProps {
     event: CheckboxChangeEvent,
     bikeId: string
   ) => any;
+  handleDeleteBike?: (bikeId: string) => any;
 }
 
 const BikesList: React.FC<BikesListProps> = ({
@@ -31,6 +32,7 @@ const BikesList: React.FC<BikesListProps> = ({
   bikesList,
   onAction,
   handleChangeAvailability,
+  handleDeleteBike
 }) => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
@@ -218,8 +220,18 @@ const BikesList: React.FC<BikesListProps> = ({
       key: "edit&delete",
       render: (available, record) => (
         <Row wrap={false} gutter={10} align="middle">
-          <BikeForm bike={record} callback={onAction}  />
-          <Button type="link" style={{color:'red'}}>Delete</Button>
+          <BikeForm bike={record} callback={onAction} />
+          <Popconfirm
+            placement="top"
+            title={"Are you sure you want to delete this Bike?"}
+            onConfirm={() => handleDeleteBike && handleDeleteBike(record.id!)}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button type="link" style={{ color: "red" }}>
+              Delete
+            </Button>
+          </Popconfirm>
         </Row>
       ),
     });

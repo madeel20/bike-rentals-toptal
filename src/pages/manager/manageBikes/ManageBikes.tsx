@@ -1,4 +1,4 @@
-import { Col, Row, Typography } from "antd";
+import { Col, message, Row, Typography } from "antd";
 import { CheckboxChangeEvent } from "antd/lib/checkbox";
 import React, { useEffect, useState } from "react";
 import BikeForm from "../../../components/BikeForm/BikeForm";
@@ -23,14 +23,12 @@ const ManageBikes = () => {
       .get()
       .then((res) => {
         setBikesList(
-          res.docs.map((each) => ({ id: each.id, ...each.data() })) as Bike[]
+          res.docs
+            .filter((e) => !e?.data()?.isDeleted)
+            .map((each) => ({ id: each.id, ...each.data() })) as Bike[]
         );
       })
       .finally(() => setLoading(false));
-  };
-
-  const onReservationAdd = () => {
-    getBikesList();
   };
 
   const handleChangeAvailability = (
@@ -49,6 +47,24 @@ const ManageBikes = () => {
         bikes[bikes.findIndex((each) => each.id === bikeId)].available =
           event.target.checked;
         setBikesList(bikes);
+        message.success("Availability Updated!");
+      })
+      .finally(() => setLoading(false));
+  };
+
+  const handleDeleteBike = (bikeId: string) => {
+    setLoading(true);
+    firestore
+      .collection("Bikes")
+      .doc(bikeId)
+      .update({
+        isDeleted: true,
+      })
+      .then((res) => {
+        let bikes = [...bikesList];
+        bikes= bikes.filter((each) => each.id !== bikeId);
+        setBikesList(bikes);
+        message.success("Bike Deleted!");
       })
       .finally(() => setLoading(false));
   };
@@ -66,7 +82,7 @@ const ManageBikes = () => {
           </Title>
         </Col>
         <Col>
-         <BikeForm callback={getBikesList} />
+          <BikeForm callback={getBikesList} />
         </Col>
       </Row>
       <Row style={{ width: "100%" }}>
@@ -75,6 +91,7 @@ const ManageBikes = () => {
           loading={loading}
           bikesList={bikesList}
           handleChangeAvailability={handleChangeAvailability}
+          handleDeleteBike={handleDeleteBike}
         />
       </Row>
     </Row>

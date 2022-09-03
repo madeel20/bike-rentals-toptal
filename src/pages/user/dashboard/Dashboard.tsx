@@ -25,7 +25,9 @@ const Dashboard = () => {
       .get()
       .then((res) => {
         setBikesList(
-          res.docs.map((each) => ({ id: each.id, ...each.data() })) as Bike[]
+          res.docs
+            .filter((e) => !e?.data()?.isDeleted)
+            .map((each) => ({ id: each.id, ...each.data() })) as Bike[]
         );
       })
       .finally(() => setLoading(false));
@@ -45,7 +47,11 @@ const Dashboard = () => {
       </Row>
       <Row className="mt-4">
         <Col span={24}>
-          <BikesList onAction={getBikesList} loading={loading} bikesList={bikesList} />
+          <BikesList
+            onAction={getBikesList}
+            loading={loading}
+            bikesList={bikesList}
+          />
         </Col>
       </Row>
     </div>
