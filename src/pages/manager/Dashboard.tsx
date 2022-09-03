@@ -1,7 +1,7 @@
 import { Button, Col, Row, Tabs, Typography } from "antd";
 import React from "react";
 import { useHistory } from "react-router-dom";
-import ManageBikes from "../manageBikes/ManageBikes";
+import ManageBikes from "./manageBikes/ManageBikes";
 import classes from "./Dashboard.module.css";
 const { TabPane } = Tabs;
 

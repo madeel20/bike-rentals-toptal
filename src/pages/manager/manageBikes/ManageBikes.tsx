@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import BikeForm from "../../../components/BikeForm/BikeForm";
 import { firestore } from "../../../firebase";
 import Bike from "../../../interfaces/Bike";
-import BikesList from "../../user/dashboard/BikesList/BikesList";
+import BikesList from "../../../components/BikesList/BikesList";
 import classes from "./ManageBikes.module.css";
 
 const { Title } = Typography;
@@ -71,7 +71,7 @@ const ManageBikes = () => {
       </Row>
       <Row style={{ width: "100%" }}>
         <BikesList
-          onReservationAdd={onReservationAdd}
+          onAction={getBikesList}
           loading={loading}
           bikesList={bikesList}
           handleChangeAvailability={handleChangeAvailability}

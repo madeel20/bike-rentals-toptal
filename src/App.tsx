@@ -12,7 +12,7 @@ import firebase from "firebase";
 import { Layout, Spin } from "antd";
 import styles from "./App.module.css";
 import Dashboard from "./pages/user/dashboard/Dashboard";
-import AdminDashboard from "./pages/manager/dashboard/Dashboard";
+import ManagerDashboard from "./pages/manager/Dashboard";
 import SignUpPage from "./pages/auth/Signup";
 import MyReservations from "./pages/user/MyReservations/MyReservations";
 const { Content } = Layout;
@@ -71,7 +71,7 @@ function App() {
               {user &&
                 (isAdmin ? (
                   <>
-                    <Route exact path="/" component={AdminDashboard} />
+                    <Route exact path="/" component={ManagerDashboard} />
                   </>
                 ) : (
                   <>

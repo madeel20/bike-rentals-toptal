@@ -1,23 +1,28 @@
-import React, { useState } from "react";
-import {
-  Modal,
-  Button,
-  message,
-  Form,
-  Input,
-} from "antd";
+import React, { useEffect, useState } from "react";
+import { Modal, Button, message, Form, Input } from "antd";
 import { firestore } from "../../firebase";
 import Bike from "../../interfaces/Bike";
 
 interface RateABikeProps {
   callback?: () => any;
   bike?: Bike;
-  reservationId?: string;
 }
+
+type FormValues = Pick<Bike, "color" | "model" | "location">;
 
 const BikeForm = ({ callback, bike }: RateABikeProps) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const [initialValues, setInitialValues] = useState<FormValues>(
+    bike || {
+      color: "",
+      location: "",
+      model: "",
+    }
+  );
+
+  useEffect(() => bike && setInitialValues(bike), [bike]);
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -32,34 +37,45 @@ const BikeForm = ({ callback, bike }: RateABikeProps) => {
   };
 
   const handleSubmit = (values: Pick<Bike, "color" | "model" | "location">) => {
-    const bike: Bike = {
-      ...values,
-      ratings: [],
-      available: true,
-    };
-
     setLoading(true);
+    let bikesCollection = firestore.collection("Bikes");
 
-    firestore
-      .collection("Bikes")
-      .add(bike)
-      .finally(() => {
+    if (bike) {
+      bikesCollection
+        .doc(bike.id)
+        .update({
+          ...values,
+        })
+        .finally(() => {
+          message.success("Bike Updated!");
+          setLoading(false);
+          callback && callback();
+          setIsModalVisible(false);
+        });
+    } else {
+      const newBike: Bike = {
+        ...values,
+        ratings: [],
+        available: true,
+      };
+      bikesCollection.add(newBike).finally(() => {
         message.success("Bike Added!");
         setLoading(false);
         callback && callback();
         setIsModalVisible(false);
       });
+    }
   };
 
   return (
     <>
-      <Button onClick={showModal} type="primary">
-        Add a Bike
+      <Button onClick={showModal} type={bike ? "link" : "primary"}>
+        {bike ? "Edit" : "Add a Bike"}
       </Button>
       {isModalVisible && (
         <Modal
           footer={null}
-          title="Add a bike"
+          title={bike ? "Edit Bike" : "Add a Bike"}
           visible={isModalVisible}
           onOk={handleOk}
           onCancel={handleCancel}
@@ -68,7 +84,7 @@ const BikeForm = ({ callback, bike }: RateABikeProps) => {
             <Form
               name="normal_login"
               className="login-form"
-              initialValues={{ remember: true }}
+              initialValues={initialValues}
               onFinish={handleSubmit}
               style={{ width: 350 }}
             >

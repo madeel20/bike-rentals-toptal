@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import { auth, firestore } from "../../../firebase";
 // import { getFormattedDate } from "../../../src/utils/helpers";
 import classes from "./Dashboard.module.css";
-import BikesList from "./BikesList/BikesList";
+import BikesList from "../../../components/BikesList/BikesList";
 import Bike from "../../../interfaces/Bike";
 const { Title } = Typography;
 
@@ -31,10 +31,6 @@ const Dashboard = () => {
       .finally(() => setLoading(false));
   };
 
-  const onReservationAdd = () =>{
-    getBikesList();
-  }
-
   return (
     <div className={classes.Dashboard}>
       <Row>
@@ -49,7 +45,7 @@ const Dashboard = () => {
       </Row>
       <Row className="mt-4">
         <Col span={24}>
-          <BikesList onReservationAdd={onReservationAdd} loading={loading} bikesList={bikesList} />
+          <BikesList onAction={getBikesList} loading={loading} bikesList={bikesList} />
         </Col>
       </Row>
     </div>

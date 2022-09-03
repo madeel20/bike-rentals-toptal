@@ -6,9 +6,10 @@ import type { FilterConfirmProps } from "antd/es/table/interface";
 import { CheckboxChangeEvent } from "antd/lib/checkbox";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
-import { UserContext } from "../../../../App";
-import Bike from "../../../../interfaces/Bike";
-import ReservationForm from "../ReservationForm/ReservationForm";
+import { UserContext } from "../../App";
+import Bike from "../../interfaces/Bike";
+import ReservationForm from "../../pages/user/dashboard/ReservationForm/ReservationForm";
+import BikeForm from "../BikeForm/BikeForm";
 
 interface BikeWithAvgRating extends Bike {
   rating: number;
@@ -18,7 +19,7 @@ type DataIndex = keyof BikeWithAvgRating;
 interface BikesListProps {
   loading: boolean;
   bikesList: Bike[];
-  onReservationAdd: () => any;
+  onAction: () => any;
   handleChangeAvailability?: (
     event: CheckboxChangeEvent,
     bikeId: string
@@ -28,7 +29,7 @@ interface BikesListProps {
 const BikesList: React.FC<BikesListProps> = ({
   loading,
   bikesList,
-  onReservationAdd,
+  onAction,
   handleChangeAvailability,
 }) => {
   const [searchText, setSearchText] = useState("");
@@ -127,8 +128,7 @@ const BikesList: React.FC<BikesListProps> = ({
       <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
     ),
     onFilter: (value, record) =>
-      record[dataIndex]!
-        .toString()
+      record[dataIndex]!.toString()
         .toLowerCase()
         .includes((value as string).toLowerCase()),
     onFilterDropdownVisibleChange: (visible) => {
@@ -192,7 +192,7 @@ const BikesList: React.FC<BikesListProps> = ({
       title: "",
       key: "reservations",
       render: (key, record) => (
-        <ReservationForm callback={onReservationAdd} bikeId={record?.id} />
+        <ReservationForm callback={onAction} bikeId={record?.id} />
       ),
     });
   else {
@@ -200,7 +200,7 @@ const BikesList: React.FC<BikesListProps> = ({
       title: "Available",
       dataIndex: "available",
       key: "available",
-      sorter: (a, b) => (a === b)? 0 : a? -1 : 1  ,
+      sorter: (a, b) => (a === b ? 0 : a ? -1 : 1),
       sortDirections: ["descend", "ascend"],
       render: (available, record) => (
         <Checkbox
@@ -210,6 +210,17 @@ const BikesList: React.FC<BikesListProps> = ({
           }
           checked={available}
         />
+      ),
+    });
+    columns.push({
+      title: "",
+      dataIndex: "edit&delete",
+      key: "edit&delete",
+      render: (available, record) => (
+        <Row wrap={false} gutter={10} align="middle">
+          <BikeForm bike={record} callback={onAction}  />
+          <Button type="link" style={{color:'red'}}>Delete</Button>
+        </Row>
       ),
     });
   }
