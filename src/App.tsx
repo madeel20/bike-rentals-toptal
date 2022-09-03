@@ -6,17 +6,15 @@ import {
   Switch,
 } from "react-router-dom";
 import CHeader from "./components/CHeader/CHeader";
-import LoginPage from "./pages/login/Login";
+import LoginPage from "./pages/auth/Login";
 import { auth, firestore } from "./firebase";
 import firebase from "firebase";
 import { Layout, Spin } from "antd";
 import styles from "./App.module.css";
 import Dashboard from "./pages/user/dashboard/Dashboard";
 import AdminDashboard from "./pages/admin/dashboard/AdminDashboard";
-import AdminLogin from "./pages/login/AdminLogin";
-import SignUpPage from "./pages/login/Signup";
+import SignUpPage from "./pages/auth/Signup";
 import MyReservations from "./pages/user/MyReservations/MyReservations";
-// import Reports from "./pages/admin/reports/Reports";
 const { Content } = Layout;
 
 function App() {
@@ -28,7 +26,7 @@ function App() {
       setUser(null);
       if (userAuth) {
         firestore
-          .collection("admins")
+          .collection("Managers")
           .doc(userAuth.uid)
           .get()
           .then((res) => {
@@ -59,7 +57,6 @@ function App() {
               <>
                 <Route exact path="/" component={LoginPage} />
                 <Route exact path="/signup" component={SignUpPage} />
-                <Route exact path="/admin-login" component={AdminLogin} />
               </>
             )}
             {user &&
@@ -71,7 +68,6 @@ function App() {
                 <>
                   <Route exact path="/" component={Dashboard} />
                   <Route exact path="/my-reservations" component={MyReservations} />
-
                 </>
               ))}
             <Redirect path="*" to="/" />
