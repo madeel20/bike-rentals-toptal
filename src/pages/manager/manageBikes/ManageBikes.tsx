@@ -1,6 +1,7 @@
 import { Col, Row, Typography } from "antd";
 import { CheckboxChangeEvent } from "antd/lib/checkbox";
 import React, { useEffect, useState } from "react";
+import BikeForm from "../../../components/BikeForm/BikeForm";
 import { firestore } from "../../../firebase";
 import Bike from "../../../interfaces/Bike";
 import BikesList from "../../user/dashboard/BikesList/BikesList";
@@ -48,17 +49,24 @@ const ManageBikes = () => {
         bikes[bikes.findIndex((each) => each.id === bikeId)].available =
           event.target.checked;
         setBikesList(bikes);
-      }).finally(() => setLoading(false));
+      })
+      .finally(() => setLoading(false));
   };
 
   return (
     <Row>
-      <Row>
+      <Row
+        style={{ width: "100%", margin: "10px 0px 20px 0px" }}
+        align="middle"
+        justify="space-between"
+      >
         <Col>
           <Title style={{ marginLeft: 10 }} level={5}>
-            {" "}
-            All Bikes{" "}
+            All Bikes
           </Title>
+        </Col>
+        <Col>
+         <BikeForm callback={getBikesList} />
         </Col>
       </Row>
       <Row style={{ width: "100%" }}>

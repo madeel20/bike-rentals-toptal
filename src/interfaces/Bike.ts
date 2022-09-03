@@ -3,7 +3,7 @@ type rating = {
     reservationId: string
 };
 interface Bike {
-    id: string,
+    id?: string,
     model: string,
     location: string,
     available: boolean,

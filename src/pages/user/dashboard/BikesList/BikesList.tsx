@@ -127,7 +127,7 @@ const BikesList: React.FC<BikesListProps> = ({
       <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
     ),
     onFilter: (value, record) =>
-      record[dataIndex]
+      record[dataIndex]!
         .toString()
         .toLowerCase()
         .includes((value as string).toLowerCase()),
@@ -200,11 +200,13 @@ const BikesList: React.FC<BikesListProps> = ({
       title: "Available",
       dataIndex: "available",
       key: "available",
+      sorter: (a, b) => (a === b)? 0 : a? -1 : 1  ,
+      sortDirections: ["descend", "ascend"],
       render: (available, record) => (
         <Checkbox
           onChange={(event) =>
             handleChangeAvailability &&
-            handleChangeAvailability(event, record.id)
+            handleChangeAvailability(event, record.id!)
           }
           checked={available}
         />
@@ -214,11 +216,11 @@ const BikesList: React.FC<BikesListProps> = ({
 
   return (
     <Table
-      rowKey={(record) => record?.id}
+      rowKey={(record) => record?.id!}
       columns={columns}
       dataSource={bikes}
       loading={loading}
-      pagination={{ pageSize: 7 }}
+      pagination={{ pageSize: 5 }}
       style={{ width: "100%" }}
     />
   );
