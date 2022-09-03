@@ -14,7 +14,6 @@ import styles from "./App.module.css";
 import Dashboard from "./pages/user/dashboard/Dashboard";
 import AdminDashboard from "./pages/admin/dashboard/AdminDashboard";
 import AdminLogin from "./pages/login/AdminLogin";
-import CaloriesPerDay from "./pages/user/caloriesPerDay/CaloriesPerDay";
 import SignUpPage from "./pages/login/Signup";
 import MyReservations from "./pages/user/MyReservations/MyReservations";
 // import Reports from "./pages/admin/reports/Reports";

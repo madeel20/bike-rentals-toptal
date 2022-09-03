@@ -3,7 +3,7 @@ import { Button, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import React, { useEffect, useState } from "react";
 import classes from "./MyReservations.module.css";
-import { firestore } from "../../../firebase";
+import { auth, firestore } from "../../../firebase";
 import Reservation from "../../../interfaces/Reservation";
 import { getFormattedDate } from "../../../utils/helpers";
 import { useHistory } from "react-router-dom";
@@ -23,9 +23,10 @@ const MyReservations: React.FC = () => {
   }, []);
 
   const getReservations = () => {
+    // Fetch reservations & bikes
     setLoading(true);
     Promise.all([
-      firestore.collection("Reservations").get(),
+      firestore.collection("Reservations").where('uid','==',auth.currentUser?.uid).get(),
       firestore.collection("Bikes").get(),
     ])
       .then(([reservations, bikes]) => {
@@ -138,6 +139,7 @@ const MyReservations: React.FC = () => {
             columns={columns}
             dataSource={reservations}
             loading={loading}
+            pagination={{pageSize:7}}
           />
         </Col>
       </Row>

@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import classes from "./AddReservation.module.css";
 import { Modal, Button, message } from "antd";
 import CForm from "./CForm";
 import { auth, firestore } from "../../../../firebase";
 import Reservation from "../../../../interfaces/Reservation";
+import moment, { Moment } from "moment";
 
 interface ReservationFormInterface {
   callback?: () => any;
@@ -11,11 +12,46 @@ interface ReservationFormInterface {
 }
 
 const ReservationForm = ({
- callback,
+  callback,
   bikeId = "",
 }: ReservationFormInterface) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [bikePrevReservations, setBikePrevReservations] = useState<
+    {
+      startTime: Moment;
+      endTime: Moment;
+    }[]
+  >([]);
+
+  useEffect(() => {
+    // Get bike reservations
+    if(isModalVisible)
+    firestore
+      .collection("Reservations")
+      .where("bikeId", "==", bikeId)
+      .where('uid','==',auth.currentUser?.uid)
+      .get()
+      .then((res) => {
+        setBikePrevReservations(
+          res.docs
+            .filter((each) => !each?.data().cancelled)
+            .map((eachReservation) => ({
+              startTime: moment(
+                new Date(
+                  (eachReservation.data() as Reservation).startTime.seconds *
+                    1000
+                )
+              ),
+              endTime: moment(
+                new Date(
+                  (eachReservation.data() as Reservation).endTime.seconds * 1000
+                )
+              ),
+            }))
+        );
+      });
+  }, [bikeId,isModalVisible]);
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -30,7 +66,6 @@ const ReservationForm = ({
   };
 
   const onSubmit = (values: any) => {
-   
     let reservation: Reservation = {
       uid: auth.currentUser?.uid!,
       email: auth?.currentUser?.email!,
@@ -69,6 +104,7 @@ const ReservationForm = ({
               isModalVisible={isModalVisible}
               loading={loading}
               onSubmit={onSubmit}
+              bikePrevReservations={bikePrevReservations}
             />
           )}
         </Modal>

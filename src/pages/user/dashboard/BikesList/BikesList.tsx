@@ -192,6 +192,7 @@ const BikesList: React.FC<BikesListProps> = ({
       columns={columns}
       dataSource={bikes}
       loading={loading}
+      pagination={{pageSize:7}}
     />
   );
 };
