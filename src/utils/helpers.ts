@@ -1,7 +1,5 @@
-export const getFormattedDate = (date:Date) => {
-    let today = new Date(date);
-    let dd = today.getDate();
-    let mm = today.getMonth() + 1;
-    let yyyy = today.getFullYear();
-    return yyyy + "-" + mm + "-" + dd;
+import moment from "moment";
+
+export const getFormattedDate = (date:any) => {
+  return moment(new Date(date?.seconds * 1000)).format("MMMM d, h:mm a")
   };

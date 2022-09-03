@@ -2,9 +2,12 @@ interface Reservation {
     id?: string,
     uid: string,
    email: string,
-   startTime: Date,
-   endTime: Date,
-   cancelled?: boolean
+   startTime: { seconds: number} , 
+   endTime: { seconds: number},
+   cancelled?: boolean,
+   bikeId: string,
+   model?: string
+   rating?: number
 }
 
 export default Reservation;

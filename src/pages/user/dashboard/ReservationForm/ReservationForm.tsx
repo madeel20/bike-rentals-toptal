@@ -5,15 +5,15 @@ import CForm from "./CForm";
 import { auth, firestore } from "../../../../firebase";
 import Reservation from "../../../../interfaces/Reservation";
 
-interface AddReservationInterface {
+interface ReservationFormInterface {
   callback?: () => any;
   bikeId?: string;
 }
 
 const ReservationForm = ({
  callback,
-  bikeId,
-}: AddReservationInterface) => {
+  bikeId = "",
+}: ReservationFormInterface) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -36,6 +36,7 @@ const ReservationForm = ({
       email: auth?.currentUser?.email!,
       startTime: values?.date[0].toDate(),
       endTime: values?.date[1].toDate(),
+      bikeId,
     };
 
     setLoading(true);

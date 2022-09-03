@@ -3,24 +3,48 @@ import { InputRef, Rate, Row } from "antd";
 import { Button, Input, Space, Table } from "antd";
 import type { ColumnsType, ColumnType } from "antd/es/table";
 import type { FilterConfirmProps } from "antd/es/table/interface";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
 import Bike from "../../../../interfaces/Bike";
 import ReservationForm from "../ReservationForm/ReservationForm";
 
-type DataIndex = keyof Bike;
+interface BikeWithAvgRating extends Bike {
+  rating: number;
+}
+type DataIndex = keyof BikeWithAvgRating;
 
 interface BikesListProps {
   loading: boolean;
   bikesList: Bike[];
-  onReservationAdd: ()=>any
+  onReservationAdd: () => any;
 }
 
-const BikesList: React.FC<BikesListProps> = ({ loading, bikesList, onReservationAdd }) => {
+const BikesList: React.FC<BikesListProps> = ({
+  loading,
+  bikesList,
+  onReservationAdd,
+}) => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
+  const [bikes, setBikes] = useState<BikeWithAvgRating[]>([]);
   const searchInput = useRef<InputRef>(null);
 
+  useEffect(() => {
+    if (bikesList) {
+      setBikes(
+        bikesList.map((eachBike: Bike) => ({
+          ...eachBike,
+          rating: eachBike.ratings.length
+            ? eachBike.ratings.reduce(
+                (total, current) => total + current?.rating,
+                0
+              ) / eachBike.ratings.length
+            : 5,
+        }))
+      );
+    }
+  }, [bikesList]);
+  
   const handleSearch = (
     selectedKeys: string[],
     confirm: (param?: FilterConfirmProps) => void,
@@ -36,7 +60,9 @@ const BikesList: React.FC<BikesListProps> = ({ loading, bikesList, onReservation
     setSearchText("");
   };
 
-  const getColumnSearchProps = (dataIndex: DataIndex): ColumnType<Bike> => ({
+  const getColumnSearchProps = (
+    dataIndex: DataIndex
+  ): ColumnType<BikeWithAvgRating> => ({
     filterDropdown: ({
       setSelectedKeys,
       selectedKeys,
@@ -115,7 +141,7 @@ const BikesList: React.FC<BikesListProps> = ({ loading, bikesList, onReservation
       ),
   });
 
-  const columns: ColumnsType<Bike> = [
+  const columns: ColumnsType<BikeWithAvgRating> = [
     {
       title: "Model",
       dataIndex: "model",
@@ -141,11 +167,11 @@ const BikesList: React.FC<BikesListProps> = ({ loading, bikesList, onReservation
       title: "Rating",
       dataIndex: "rating",
       key: "rating",
-      sorter: (a, b) => a.rating - b.rating,
+      sorter: (a, b) => (a?.rating || 0) - (b?.rating || 0),
       sortDirections: ["descend", "ascend"],
       render: (rating: number) => {
         return (
-          <Row style={{width:140}}>
+          <Row style={{ width: 140 }}>
             <Rate disabled defaultValue={Number(rating)} />
           </Row>
         );
@@ -154,7 +180,9 @@ const BikesList: React.FC<BikesListProps> = ({ loading, bikesList, onReservation
     {
       title: "",
       key: "resrevations",
-      render: (key, record) => <ReservationForm callback={onReservationAdd} bikeId={record?.id} />,
+      render: (key, record) => (
+        <ReservationForm callback={onReservationAdd} bikeId={record?.id} />
+      ),
     },
   ];
 
@@ -162,7 +190,7 @@ const BikesList: React.FC<BikesListProps> = ({ loading, bikesList, onReservation
     <Table
       rowKey={(record) => record?.id}
       columns={columns}
-      dataSource={bikesList}
+      dataSource={bikes}
       loading={loading}
     />
   );
