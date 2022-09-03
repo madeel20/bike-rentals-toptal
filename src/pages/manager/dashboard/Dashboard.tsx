@@ -13,7 +13,7 @@ const AdminDashboard = () => {
     <div className={classes.Dashboard}>
       <Row>
         <Col span={19}>
-          <Title level={4}>Admin Dashboard </Title>
+          <Title level={4}>Manager Dashboard </Title>
         </Col>
         <Col style={{ display: "flex", justifyContent: "end" }} span={5}>
           <Button onClick={() => history.push("/reports")} type="link">

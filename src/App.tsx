@@ -12,7 +12,7 @@ import firebase from "firebase";
 import { Layout, Spin } from "antd";
 import styles from "./App.module.css";
 import Dashboard from "./pages/user/dashboard/Dashboard";
-import AdminDashboard from "./pages/admin/dashboard/AdminDashboard";
+import AdminDashboard from "./pages/manager/dashboard/Dashboard";
 import SignUpPage from "./pages/auth/Signup";
 import MyReservations from "./pages/user/MyReservations/MyReservations";
 const { Content } = Layout;
