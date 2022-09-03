@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Redirect,
@@ -16,6 +16,14 @@ import AdminDashboard from "./pages/admin/dashboard/AdminDashboard";
 import SignUpPage from "./pages/auth/Signup";
 import MyReservations from "./pages/user/MyReservations/MyReservations";
 const { Content } = Layout;
+
+export const UserContext = createContext<{
+  isAdmin: boolean;
+  user: firebase.User | null | boolean;
+}>({
+  isAdmin: false,
+  user: null,
+});
 
 function App() {
   const [user, setUser] = useState<firebase.User | null | boolean>(null);
@@ -49,31 +57,37 @@ function App() {
   }
   return (
     <Router>
-      <Layout>
-        <CHeader />
-        <Content className={styles.content}>
-          <Switch>
-            {!auth.currentUser && (
-              <>
-                <Route exact path="/" component={LoginPage} />
-                <Route exact path="/signup" component={SignUpPage} />
-              </>
-            )}
-            {user &&
-              (isAdmin ? (
+      <UserContext.Provider value={{ user, isAdmin }}>
+        <Layout>
+          <CHeader />
+          <Content className={styles.content}>
+            <Switch>
+              {!auth.currentUser && (
                 <>
-                  <Route exact path="/" component={AdminDashboard} />
+                  <Route exact path="/" component={LoginPage} />
+                  <Route exact path="/signup" component={SignUpPage} />
                 </>
-              ) : (
-                <>
-                  <Route exact path="/" component={Dashboard} />
-                  <Route exact path="/my-reservations" component={MyReservations} />
-                </>
-              ))}
-            <Redirect path="*" to="/" />
-          </Switch>
-        </Content>
-      </Layout>
+              )}
+              {user &&
+                (isAdmin ? (
+                  <>
+                    <Route exact path="/" component={AdminDashboard} />
+                  </>
+                ) : (
+                  <>
+                    <Route exact path="/" component={Dashboard} />
+                    <Route
+                      exact
+                      path="/my-reservations"
+                      component={MyReservations}
+                    />
+                  </>
+                ))}
+              <Redirect path="*" to="/" />
+            </Switch>
+          </Content>
+        </Layout>
+      </UserContext.Provider>
     </Router>
   );
 }

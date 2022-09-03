@@ -1,10 +1,12 @@
 import { SearchOutlined } from "@ant-design/icons";
-import { InputRef, Rate, Row } from "antd";
+import { Checkbox, InputRef, Rate, Row } from "antd";
 import { Button, Input, Space, Table } from "antd";
 import type { ColumnsType, ColumnType } from "antd/es/table";
 import type { FilterConfirmProps } from "antd/es/table/interface";
-import React, { useEffect, useRef, useState } from "react";
+import { CheckboxChangeEvent } from "antd/lib/checkbox";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
+import { UserContext } from "../../../../App";
 import Bike from "../../../../interfaces/Bike";
 import ReservationForm from "../ReservationForm/ReservationForm";
 
@@ -17,17 +19,23 @@ interface BikesListProps {
   loading: boolean;
   bikesList: Bike[];
   onReservationAdd: () => any;
+  handleChangeAvailability?: (
+    event: CheckboxChangeEvent,
+    bikeId: string
+  ) => any;
 }
 
 const BikesList: React.FC<BikesListProps> = ({
   loading,
   bikesList,
   onReservationAdd,
+  handleChangeAvailability,
 }) => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const [bikes, setBikes] = useState<BikeWithAvgRating[]>([]);
   const searchInput = useRef<InputRef>(null);
+  const { isAdmin } = useContext(UserContext);
 
   useEffect(() => {
     if (bikesList) {
@@ -44,7 +52,7 @@ const BikesList: React.FC<BikesListProps> = ({
       );
     }
   }, [bikesList]);
-  
+
   const handleSearch = (
     selectedKeys: string[],
     confirm: (param?: FilterConfirmProps) => void,
@@ -177,14 +185,32 @@ const BikesList: React.FC<BikesListProps> = ({
         );
       },
     },
-    {
+  ];
+
+  if (!isAdmin)
+    columns.push({
       title: "",
-      key: "resrevations",
+      key: "reservations",
       render: (key, record) => (
         <ReservationForm callback={onReservationAdd} bikeId={record?.id} />
       ),
-    },
-  ];
+    });
+  else {
+    columns.push({
+      title: "Available",
+      dataIndex: "available",
+      key: "available",
+      render: (available, record) => (
+        <Checkbox
+          onChange={(event) =>
+            handleChangeAvailability &&
+            handleChangeAvailability(event, record.id)
+          }
+          checked={available}
+        />
+      ),
+    });
+  }
 
   return (
     <Table
@@ -192,7 +218,8 @@ const BikesList: React.FC<BikesListProps> = ({
       columns={columns}
       dataSource={bikes}
       loading={loading}
-      pagination={{pageSize:7}}
+      pagination={{ pageSize: 7 }}
+      style={{ width: "100%" }}
     />
   );
 };
