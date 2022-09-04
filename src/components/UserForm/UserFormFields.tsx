@@ -27,8 +27,6 @@ const UserFormFields = (props: UserFormFieldsProps) => {
     }
   );
 
-  console.log(user);
-
   useEffect(() => user && setInitialValues(user), [user]);
 
   return (

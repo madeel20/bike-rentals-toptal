@@ -58,7 +58,6 @@ app.get("/user", firebaseAuth, async (req, response) => {
  */
 app.post("/user", firebaseAuth, async (req, response) => {
   let { displayName, email, password } = req.body;
-  console.log(displayName, email, password);
   admin
     .auth()
     .createUser({

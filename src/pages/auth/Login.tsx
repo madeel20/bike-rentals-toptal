@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { Form, Input, Button, Row, message } from "antd";
-import { Link, useHistory } from "react-router-dom";
+import React, { useState } from "react";
+import { Form, Input, Button, message } from "antd";
+import { useHistory } from "react-router-dom";
 import { auth, googleProvider } from "../../firebase";
 import firebase from "firebase";
 import { Typography } from "antd";
@@ -29,12 +29,6 @@ export default function LoginPage() {
       })
       .finally(() => setLoading(false));
   };
-
-  const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
-  };
-
-  // get redux state
 
   return (
     <Form
@@ -77,15 +71,27 @@ export default function LoginPage() {
           type="password"
           placeholder="Password"
           size="large"
-
         />
       </Form.Item>
 
       <Form.Item>
-        <Button loading={loading} type="primary" htmlType="submit" className="login-form-button">
+        <Button
+          loading={loading}
+          type="primary"
+          htmlType="submit"
+          className="login-form-button"
+        >
           Log in
         </Button>{" "}
-        &nbsp; &nbsp; Or <Button onClick={()=>history.push('/signup')} disabled={loading} type="link"> Sign Up</Button>
+        &nbsp; &nbsp; Or{" "}
+        <Button
+          onClick={() => history.push("/signup")}
+          disabled={loading}
+          type="link"
+        >
+          {" "}
+          Sign Up
+        </Button>
       </Form.Item>
     </Form>
   );
