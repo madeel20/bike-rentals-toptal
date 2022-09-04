@@ -3,6 +3,7 @@ import React from "react";
 import ManageBikes from "./manageBikes/ManageBikes";
 import classes from "./Dashboard.module.css";
 import ManageUsers from "./manageUsers/ManageUsers";
+import Reservations from "./Reservations/Reservations";
 const { TabPane } = Tabs;
 
 const { Title } = Typography;
@@ -25,8 +26,8 @@ const AdminDashboard = () => {
         <TabPane tab="Manage Users" key="2">
           <ManageUsers />
         </TabPane>
-        <TabPane tab="Manage Managers" key="3">
-          Content of Tab Pane 3
+        <TabPane tab="Reservations" key="3">
+          <Reservations />
         </TabPane>
       </Tabs>
     </div>

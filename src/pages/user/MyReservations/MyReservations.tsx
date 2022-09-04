@@ -1,14 +1,11 @@
-import { Col, Popconfirm, Row, Typography } from "antd";
-import { Button, Table } from "antd";
-import type { ColumnsType } from "antd/es/table";
+import { Col, Row, Typography } from "antd";
+import { Button} from "antd";
 import React, { useEffect, useState } from "react";
 import classes from "./MyReservations.module.css";
 import { auth, firestore } from "../../../firebase";
 import Reservation from "../../../interfaces/Reservation";
-import { getFormattedDate } from "../../../utils/helpers";
 import { useHistory } from "react-router-dom";
-import moment from "moment";
-import RateABike from "./RateABike/RateABike";
+import ReservationsList from "../../../components/ReservationsList/ReservationsList";
 const { Title } = Typography;
 
 const MyReservations: React.FC = () => {
@@ -26,7 +23,10 @@ const MyReservations: React.FC = () => {
     // Fetch reservations & bikes
     setLoading(true);
     Promise.all([
-      firestore.collection("Reservations").where('uid','==',auth.currentUser?.uid).get(),
+      firestore
+        .collection("Reservations")
+        .where("uid", "==", auth.currentUser?.uid)
+        .get(),
       firestore.collection("Bikes").get(),
     ])
       .then(([reservations, bikes]) => {
@@ -56,70 +56,6 @@ const MyReservations: React.FC = () => {
       });
   };
 
-  const renderActions = (key: any, record: Reservation) => {
-    // if reservations is cancelled
-    if (record?.cancelled)
-      return <Typography style={{ color: "red" }}>Cancelled</Typography>;
-
-    // if already rated
-    if (record.hasOwnProperty("rating")) return "Reviewed";
-
-    // if reservation completed
-    if (isReservationCompleted(record))
-      return (
-        <RateABike
-          callback={getReservations}
-          bikeId={record.bikeId}
-          reservationId={record.id}
-        />
-      );
-
-    return (
-      <Popconfirm
-        placement="top"
-        title={"Do you want to cancel this reservation?"}
-        onConfirm={() => handleCancelReservation(record.id!)}
-        okText="Yes"
-        cancelText="No"
-      >
-        <Button type="link">Cancel</Button>
-      </Popconfirm>
-    );
-  };
-
-  const columns: ColumnsType<Reservation> = [
-    {
-      title: "Bike Model",
-      dataIndex: "model",
-      key: "model",
-    },
-    {
-      title: "Start Time",
-      dataIndex: "startTime",
-      key: "startTime",
-      render: (value: any) => <>{getFormattedDate(value)}</>,
-    },
-    {
-      title: "End Time",
-      dataIndex: "endTime",
-      key: "endtime",
-      render: (value: any) => <>{getFormattedDate(value)}</>,
-    },
-    {
-      title: "",
-      dataIndex: "cancel",
-      key: "cancel",
-      render: renderActions,
-    },
-  ];
-
-  const isReservationCompleted = (reservation: Reservation) => {
-    if (reservation.cancelled) return false;
-    let endTime = moment(new Date(reservation.endTime?.seconds * 1000));
-    let now = moment(new Date());
-    return now.isAfter(endTime);
-  };
-
   return (
     <div className={classes.Dashboard}>
       <Row>
@@ -134,12 +70,11 @@ const MyReservations: React.FC = () => {
       </Row>
       <Row className="mt-4">
         <Col span={24}>
-          <Table
-            rowKey={(record) => record?.id!}
-            columns={columns}
-            dataSource={reservations}
+          <ReservationsList
+            reservations={reservations}
+            callback={getReservations}
             loading={loading}
-            pagination={{pageSize:7}}
+            handleCancelReservation={handleCancelReservation}
           />
         </Col>
       </Row>

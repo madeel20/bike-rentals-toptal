@@ -16,7 +16,9 @@ function CHeader() {
 
   const menu = (
     <Menu>
-      <Menu.Item onClick={() => auth.signOut().then(res=>history.push('/'))}>
+      <Menu.Item
+        onClick={() => auth.signOut().then((res) => history.push("/"))}
+      >
         <LogoutOutlined /> Sign Out
       </Menu.Item>
     </Menu>
@@ -24,13 +26,15 @@ function CHeader() {
 
   return (
     <Header style={styles.header}>
-      <Link  to="/">
+      <Link to="/">
         <Title level={2} style={styles.heading}>
-         React Bike Rentals
+          React Bike Rentals
         </Title>
       </Link>
       <Row align="middle">
-      <Typography style={{color:'white', marginRight:20}}>{auth.currentUser?.displayName}</Typography>
+        <Typography style={{ color: "white", marginRight: 20 }}>
+          <b>{auth.currentUser?.displayName}</b> ( {auth.currentUser?.email} )
+        </Typography>
         {auth.currentUser && (
           <Dropdown overlay={menu} placement="bottomLeft" arrow>
             <Avatar size="large" icon={<UserOutlined />} />

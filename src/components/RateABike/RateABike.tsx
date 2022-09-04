@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Modal, Button, message, Rate, Col, Row } from "antd";
-import { firestore } from "../../../../firebase";
+import { firestore } from "../../firebase";
 import  firebase from 'firebase';
 
 interface RateABikeProps {
