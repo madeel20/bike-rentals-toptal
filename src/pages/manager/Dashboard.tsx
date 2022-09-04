@@ -15,11 +15,6 @@ const AdminDashboard = () => {
         <Col span={19}>
           <Title level={4}>Manager Dashboard </Title>
         </Col>
-        <Col style={{ display: "flex", justifyContent: "end" }} span={5}>
-          <Button onClick={() => history.push("/reports")} type="link">
-            Reports
-          </Button>
-        </Col>
       </Row>
       <Tabs
         style={{ backgroundColor: "white", padding: 15, marginTop: 20 }}
