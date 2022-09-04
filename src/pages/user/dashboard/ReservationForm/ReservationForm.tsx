@@ -30,7 +30,6 @@ const ReservationForm = ({
     firestore
       .collection("Reservations")
       .where("bikeId", "==", bikeId)
-      .where('uid','==',auth.currentUser?.uid)
       .get()
       .then((res) => {
         setBikePrevReservations(
