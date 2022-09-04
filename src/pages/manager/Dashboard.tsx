@@ -1,13 +1,12 @@
-import { Button, Col, Row, Tabs, Typography } from "antd";
+import {  Col, Row, Tabs, Typography } from "antd";
 import React from "react";
-import { useHistory } from "react-router-dom";
 import ManageBikes from "./manageBikes/ManageBikes";
 import classes from "./Dashboard.module.css";
+import ManageUsers from "./manageUsers/ManageUsers";
 const { TabPane } = Tabs;
 
 const { Title } = Typography;
 const AdminDashboard = () => {
-  const history = useHistory();
 
   return (
     <div className={classes.Dashboard}>
@@ -24,7 +23,7 @@ const AdminDashboard = () => {
           <ManageBikes />
         </TabPane>
         <TabPane tab="Manage Users" key="2">
-          Content of Tab Pane 2
+          <ManageUsers />
         </TabPane>
         <TabPane tab="Manage Managers" key="3">
           Content of Tab Pane 3

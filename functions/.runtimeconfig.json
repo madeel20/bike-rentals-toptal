@@ -1,0 +1,17 @@
+{
+  "database": {
+    "url": "https://bike-rentals-toptal-11607.firebaseio.com"
+  },
+  "service_account": {
+    "project_id": "bike-rentals-toptal-11607",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "client_email": "firebase-adminsdk-f53bu@bike-rentals-toptal-11607.iam.gserviceaccount.com",
+    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-f53bu%40bike-rentals-toptal-11607.iam.gserviceaccount.com",
+    "type": "service_account",
+    "private_key": "-----BEGIN PRIVATE KEY-----\\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDoWz8YKJK4eNLn\\nbtCJ9eOrSsGGDMXJ2VI4bp5fk/DperkNJa3ggy2Mg51F76gGVLx9qsIEEjxDh8er\\n98+OFD+yEQOyWurbUR/oLiNd9yG/2xx5G5mUkP4cy/g/eILn/1zjPCTq+d8ayaww\\n3KcDywVZlBUPmspyoPpeJAtrGUg+pia6A2VimHo9S70nz+bMaU52RH2ZV4L0gwHn\\nmNLSKJX26BVrO38DnDkHTeF1jHXwNiENZuXbLbYYsAcetE1H8ypC6nDUuVN9ACPR\\n4iDP1lu/8So5Z9OVFZla6hTBV4tgJ8WMb6JoVWknv+jY+HwCouuWB6ilShRU2Jk5\\njIR/nOAdAgMBAAECggEAAqu/LJaVeSwKYJapgax4ktN9KKlPl2O5dOSbSsX3PaJ8\\n1hCE0HvcM4KfytoCYxro6m44D2FA8sBwzyKTbt1UuMXxS5o38OVx1HK9/VUwkiAB\\nUnMQGjZrIAby3OfpuU5PfF0zShrX3Fr3xmgC6MxAoihNmwGl1MN88pq/dtpc4OYf\\nwxP/Jo5K8RUAmMK0+Wu/TgDGfb/ncD7RQ9Tv+BGA0v8t72239iR/SUOsO3LBYtsF\\ns3SoXEtP4U3twzib+pPpmihrowfL4HAOpMQY1wns95ixcQ5MzNnVfY/qXs/HYSKJ\\nWXJNnztb3vveLd3HnoV/oZ8gDOMKBaWsQSoqOPVVkQKBgQD1MVt35hM+Cg2Us0VO\\nLMmgNtFiikahObXD1ufVgB1M17Y93Btm343gwxPRKCkgSsws558m3vI94uTfisPz\\nTfnJgGGmQv17SXUwYnxz9CQB8KjiuotzWE8PRR0YpWBbjlGRFBrc9ore4tnhUEa2\\n4wSeFJnLpGv+Z4ujsEAmLOYYkwKBgQDymQyqA4GN+Fvx8AU/xeRODKzvKBQaUOqi\\nNKTS1zUe0FrB1JEfcAVAG1lFnQYqge75phyJpkFM9NbMkVIKDfKFNdcFNJab3B4R\\nD1C9dp9Rlvy2XPdiVpz3CKLeoyoYZrUw2d14WXGVtOb+VfYiz/JM5fx5UWAK0cPu\\nOosaqAwCjwKBgQC3r59PpnxZ6Nwdv2O3WhQ+w3J/eQnKtNo3+eK6bn0E2UF8/E1G\\n90lpzZsmAQk2WPK23Vq8mx8tP7KoyWNc/diYnWYKUXtmhjSV5+JGV+s1zN4o5Qmd\\ngtXPob5XfWU/kdIHduFdEhIdQiNqCWLAljgaWWKSTf5dm6LgISUdtFs4owKBgCIj\\nEzshPyvBFP8YbUSqDhRFiFgm5Z1GYZ3tlnvsuJbbbsnzpXAtDTAWKRu4mtOEcSJE\\nE6Py9yFjGo6yrD6p88R27QjYe5D3CmwQIaZneMe8XVc0AcOeuHuyhWiawSOp4Dk9\\njwKOY4NTb2W+puIDLO9RNZPEtaUQG2f8aPKZTwdVAoGAbL6dp71N8qQ9LE3ubc7i\\nzDDw7iYgl8yPcDzMEMv3xKJwaYhJe9DE9j9hQbEVA65SaCgmOlI+A3Om1mi7emd6\\nSAEK8bwhoaqmml1i6P/TqPp5woiNlQAKXp6ZM5LmDJnaVNVBvSH3RHxelt1ciK6r\\nUwsL28kI1zqUeDVz42mVIUg=\\n-----END PRIVATE KEY-----\\n",
+    "client_id": "101531243957469164361",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "private_key_id": "940edc860a36b99db1c4a8a362d6dc9c950fbfc4"
+  }
+}

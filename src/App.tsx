@@ -15,6 +15,12 @@ import Dashboard from "./pages/user/dashboard/Dashboard";
 import ManagerDashboard from "./pages/manager/Dashboard";
 import SignUpPage from "./pages/auth/Signup";
 import MyReservations from "./pages/user/MyReservations/MyReservations";
+import axios from "axios";
+
+axios.defaults.baseURL =
+  "http://localhost:5000/bike-rentals-toptal-11607/us-central1/api";
+axios.defaults.headers.post["Content-Type"] = "application/json";
+
 const { Content } = Layout;
 
 export const UserContext = createContext<{
@@ -33,20 +39,32 @@ function App() {
     auth.onAuthStateChanged((userAuth) => {
       setUser(null);
       if (userAuth) {
-        firestore
-          .collection("Managers")
-          .doc(userAuth.uid)
-          .get()
-          .then((res) => {
-            if (res.exists) setIsAdmin(true);
-            setUser(userAuth);
-          });
+        checkRole();
+        setUser(userAuth);
       } else {
         setUser(false);
         setIsAdmin(false);
       }
     });
   }, []);
+
+  const checkRole = () => {
+    auth?.currentUser
+      ?.getIdTokenResult()
+      .then((idTokenResult) => {
+        // Confirm the user is a manager.
+        if (!!idTokenResult.claims?.isManager) {
+          auth?.currentUser?.getIdToken().then((res) => {
+            axios.defaults.headers.common["Authorization"] = res;
+          });
+          // Show manager UI.
+          setIsAdmin(true);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   if (user === null) {
     return (
