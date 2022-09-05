@@ -5,7 +5,6 @@ import BikeForm from "../../../components/BikeForm/BikeForm";
 import { firestore } from "../../../firebase";
 import Bike from "../../../interfaces/Bike";
 import BikesList from "../../../components/BikesList/BikesList";
-import classes from "./ManageBikes.module.css";
 
 const { Title } = Typography;
 const ManageBikes = () => {

@@ -17,7 +17,7 @@ interface UserFormFieldsProps {
 const UserFormFields = (props: UserFormFieldsProps) => {
   const { user } = props;
   const [isManager, setIsManager] = useState(user?.isManager || false);
-  const { isAdmin } = useContext(UserContext);
+  const { isManager: isManagerRole } = useContext(UserContext);
   const history = useHistory();
   const [initialValues, setInitialValues] = useState<FormValues>(
     user || {
@@ -91,7 +91,7 @@ const UserFormFields = (props: UserFormFieldsProps) => {
         </Form.Item>
       )}
 
-      {isAdmin && (
+      {isManagerRole && (
         <Form.Item name="isManager">
           <Checkbox
             value={isManager}
@@ -112,7 +112,7 @@ const UserFormFields = (props: UserFormFieldsProps) => {
         >
           Submit
         </Button>
-        {!isAdmin && (
+        {!isManagerRole && (
           <>
             &nbsp; &nbsp; Or{" "}
             <Button

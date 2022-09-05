@@ -1,4 +1,4 @@
-type rating = {
+type Rating = {
     rating: 1 | 2 | 3 | 4 |5,
     reservationId: string
 };
@@ -7,7 +7,7 @@ interface Bike {
     model: string,
     location: string,
     available: boolean,
-    ratings: rating[],
+    ratings: Rating[],
     color: string,
     isDeleted?: boolean
 }

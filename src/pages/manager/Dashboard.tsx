@@ -1,7 +1,6 @@
 import {  Col, Row, Tabs, Typography } from "antd";
 import React from "react";
 import ManageBikes from "./manageBikes/ManageBikes";
-import classes from "./Dashboard.module.css";
 import ManageUsers from "./manageUsers/ManageUsers";
 import Reservations from "./Reservations/Reservations";
 const { TabPane } = Tabs;
@@ -10,7 +9,7 @@ const { Title } = Typography;
 const AdminDashboard = () => {
 
   return (
-    <div className={classes.Dashboard}>
+    <div style={{width: 1000}}>
       <Row>
         <Col span={19}>
           <Title level={4}>Manager Dashboard </Title>

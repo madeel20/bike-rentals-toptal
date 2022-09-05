@@ -20,7 +20,7 @@ const ReservationsList = ({
   loading,
   reservations,
 }: ReservationListProps) => {
-  const { isAdmin } = useContext(UserContext);
+  const { isManager } = useContext(UserContext);
 
   const renderActions = (key: any, record: Reservation) => {
     // if reservations is cancelled
@@ -32,7 +32,7 @@ const ReservationsList = ({
 
     // if reservation completed
     if (isReservationCompleted(record))
-      if (isAdmin) return <>Waiting for Review</>;
+      if (isManager) return <>Waiting for Review</>;
       else
         return (
           <RateABike
@@ -42,7 +42,7 @@ const ReservationsList = ({
           />
         );
 
-    if (!isAdmin)
+    if (!isManager)
       return (
         <Popconfirm
           placement="top"
@@ -84,7 +84,7 @@ const ReservationsList = ({
     },
   ];
 
-  if (isAdmin) {
+  if (isManager) {
     columns.unshift({
       title: "Email",
       dataIndex: "email",

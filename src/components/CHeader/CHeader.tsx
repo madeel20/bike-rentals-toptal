@@ -1,5 +1,5 @@
-import { Avatar, Col, Dropdown, Layout, Menu, Row } from "antd";
-import React, { useState } from "react";
+import { Avatar, Dropdown, Layout, Menu, Row } from "antd";
+import React from "react";
 import { Link, useHistory } from "react-router-dom";
 import { Typography } from "antd";
 import { LogoutOutlined, UserOutlined } from "@ant-design/icons";

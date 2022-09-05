@@ -2,15 +2,15 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
-import "firebase/database"
+import "firebase/database";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCd8g2Umw3pkjR90YER4BZ0A6vmnwNrwYw",
-  authDomain: "bike-rentals-toptal-11607.firebaseapp.com",
-  projectId: "bike-rentals-toptal-11607",
-  storageBucket: "bike-rentals-toptal-11607.appspot.com",
-  messagingSenderId: "196042668761",
-  appId: "1:196042668761:web:517eb23bc0bfe5f7f59cc8"
+  apiKey: process.env.REACT_APP_FIREBASE_apiKey,
+  authDomain: process.env.REACT_APP_FIREBASE_authDomain,
+  projectId: process.env.REACT_APP_FIREBASE_projectId,
+  storageBucket: process.env.REACT_APP_FIREBASE_storageBucket,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_messagingSenderId,
+  appId: process.env.REACT_APP_FIREBASE_appId,
 };
 
 firebase.initializeApp(firebaseConfig);

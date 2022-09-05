@@ -7,33 +7,32 @@ import {
 } from "react-router-dom";
 import CHeader from "./components/CHeader/CHeader";
 import LoginPage from "./pages/auth/Login";
-import { auth, firestore } from "./firebase";
+import { auth } from "./firebase";
 import firebase from "firebase";
 import { Layout, Spin } from "antd";
 import styles from "./App.module.css";
 import Dashboard from "./pages/user/dashboard/Dashboard";
 import ManagerDashboard from "./pages/manager/Dashboard";
 import SignUpPage from "./pages/auth/Signup";
-import MyReservations from "./pages/user/MyReservations/MyReservations";
+import MyReservations from "./pages/user/myReservations/MyReservations";
 import axios from "axios";
 
-axios.defaults.baseURL =
-  "http://localhost:5000/bike-rentals-toptal-11607/us-central1/api";
+axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
 const { Content } = Layout;
 
 export const UserContext = createContext<{
-  isAdmin: boolean;
+  isManager: boolean;
   user: firebase.User | null | boolean;
 }>({
-  isAdmin: false,
+  isManager: false,
   user: null,
 });
 
 function App() {
   const [user, setUser] = useState<firebase.User | null | boolean>(null);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [isManager, setIsManager] = useState(false);
 
   useEffect(() => {
     auth.onAuthStateChanged((userAuth) => {
@@ -43,7 +42,7 @@ function App() {
         setUser(userAuth);
       } else {
         setUser(false);
-        setIsAdmin(false);
+        setIsManager(false);
       }
     });
   }, []);
@@ -58,7 +57,7 @@ function App() {
             axios.defaults.headers.common["Authorization"] = res;
           });
           // Show manager UI.
-          setIsAdmin(true);
+          setIsManager(true);
         }
       })
       .catch((error) => {
@@ -75,7 +74,7 @@ function App() {
   }
   return (
     <Router>
-      <UserContext.Provider value={{ user, isAdmin }}>
+      <UserContext.Provider value={{ user, isManager }}>
         <Layout>
           <CHeader />
           <Content className={styles.content}>
@@ -87,7 +86,7 @@ function App() {
                 </>
               )}
               {user &&
-                (isAdmin ? (
+                (isManager ? (
                   <>
                     <Route exact path="/" component={ManagerDashboard} />
                   </>

@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { Form, Input, Button, message } from "antd";
 import { useHistory } from "react-router-dom";
-import { auth, googleProvider } from "../../firebase";
+import { auth } from "../../firebase";
 import firebase from "firebase";
 import { Typography } from "antd";
-import classes from "./login.module.css";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 
 const { Title } = Typography;
@@ -12,10 +11,6 @@ const { Title } = Typography;
 export default function LoginPage() {
   const history = useHistory();
   const [loading, setLoading] = useState<boolean>(false);
-
-  const handleSubmit = () => {
-    auth.signInWithPopup(googleProvider);
-  };
 
   const onFinish = (values: { email: string; password: string }) => {
     setLoading(true);
@@ -33,7 +28,6 @@ export default function LoginPage() {
   return (
     <Form
       name="normal_login"
-      className="login-form"
       initialValues={{ remember: true }}
       onFinish={onFinish}
       style={{ width: 350 }}
@@ -89,7 +83,6 @@ export default function LoginPage() {
           disabled={loading}
           type="link"
         >
-          {" "}
           Sign Up
         </Button>
       </Form.Item>

@@ -38,7 +38,7 @@ const BikesList: React.FC<BikesListProps> = ({
   const [searchedColumn, setSearchedColumn] = useState("");
   const [bikes, setBikes] = useState<BikeWithAvgRating[]>([]);
   const searchInput = useRef<InputRef>(null);
-  const { isAdmin } = useContext(UserContext);
+  const { isManager } = useContext(UserContext);
 
   useEffect(() => {
     if (bikesList) {
@@ -189,7 +189,7 @@ const BikesList: React.FC<BikesListProps> = ({
     },
   ];
 
-  if (!isAdmin)
+  if (!isManager)
     columns.push({
       title: "",
       key: "reservations",

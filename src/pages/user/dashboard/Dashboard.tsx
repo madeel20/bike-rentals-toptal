@@ -1,9 +1,7 @@
-import { Button, Col, DatePicker, Row, Typography } from "antd";
+import { Button, Col, Row, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { auth, firestore } from "../../../firebase";
-// import { getFormattedDate } from "../../../src/utils/helpers";
-import classes from "./Dashboard.module.css";
+import {  firestore } from "../../../firebase";
 import BikesList from "../../../components/BikesList/BikesList";
 import Bike from "../../../interfaces/Bike";
 const { Title } = Typography;
@@ -34,7 +32,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className={classes.Dashboard}>
+    <div style={{width: 800}}>
       <Row>
         <Col span={19}>
           <Title level={4}>Bikes Available</Title>

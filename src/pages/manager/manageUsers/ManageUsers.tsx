@@ -9,8 +9,8 @@ import {
 import User from "../../../interfaces/User";
 import UsersList from "../../../components/UsersList/UsersList";
 import UserForm from "../../../components/UserForm/UserForm";
-
 const { Title } = Typography;
+
 const ManageUsers = () => {
   const [usersList, setUsersList] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
