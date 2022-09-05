@@ -202,7 +202,7 @@ const BikesList: React.FC<BikesListProps> = ({
       title: "Available",
       dataIndex: "available",
       key: "available",
-      sorter: (a, b) => (a === b ? 0 : a ? -1 : 1),
+      sorter: (a, b) => (a.available === b.available ? 0 : a.available ? -1 : 1),
       sortDirections: ["descend", "ascend"],
       render: (available, record) => (
         <Checkbox

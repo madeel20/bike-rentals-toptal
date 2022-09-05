@@ -9,7 +9,7 @@ const { Title } = Typography;
 const AdminDashboard = () => {
 
   return (
-    <div style={{width: 1000}}>
+    <div style={{width: 1000, marginTop: -50}}>
       <Row>
         <Col span={19}>
           <Title level={4}>Manager Dashboard </Title>
