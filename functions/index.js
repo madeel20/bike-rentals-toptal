@@ -40,7 +40,6 @@ app.get("/user", firebaseAuth, async (req, response) => {
           email,
           isManager: customClaims && customClaims.isManager,
           displayName,
-          ads:'asdfa'
         })
       );
       response.status(200).json({ users });

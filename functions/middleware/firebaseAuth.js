@@ -12,6 +12,7 @@ async function firebaseAuth(req, res, next) {
       .auth()
       .getUser(token.uid);
 
+    // Only allow manager role to access APIs
     if (!userRecord.customClaims.isManager)
       res.status(401).json({ error: { code: "unauthenticated" } });
 
