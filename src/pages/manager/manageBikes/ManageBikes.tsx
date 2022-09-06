@@ -5,8 +5,8 @@ import BikeForm from "../../../components/BikeForm/BikeForm";
 import { firestore } from "../../../firebase";
 import Bike from "../../../interfaces/Bike";
 import BikesList from "../../../components/BikesList/BikesList";
-
 const { Title } = Typography;
+
 const ManageBikes = () => {
   const [bikesList, setBikesList] = useState<Bike[]>([]);
   const [loading, setLoading] = useState(false);
@@ -61,7 +61,7 @@ const ManageBikes = () => {
       })
       .then((res) => {
         let bikes = [...bikesList];
-        bikes= bikes.filter((each) => each.id !== bikeId);
+        bikes = bikes.filter((each) => each.id !== bikeId);
         setBikesList(bikes);
         message.success("Bike Deleted!");
       })

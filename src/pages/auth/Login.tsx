@@ -5,17 +5,20 @@ import { auth } from "../../firebase";
 import firebase from "firebase";
 import { Typography } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import User from "../../interfaces/User";
 
 const { Title } = Typography;
+
+type FormFields = Pick<User, "email" | "password">;
 
 export default function LoginPage() {
   const history = useHistory();
   const [loading, setLoading] = useState<boolean>(false);
 
-  const onFinish = (values: { email: string; password: string }) => {
+  const onFinish = (values: FormFields) => {
     setLoading(true);
     auth
-      .signInWithEmailAndPassword(values.email, values.password)
+      .signInWithEmailAndPassword(values.email, values.password!)
       .then((res: firebase.auth.UserCredential) => {
         message.success("Login Successful!");
       })

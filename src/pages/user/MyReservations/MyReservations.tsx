@@ -1,5 +1,5 @@
 import { Col, Row, Typography } from "antd";
-import { Button} from "antd";
+import { Button } from "antd";
 import React, { useEffect, useState } from "react";
 import { auth, firestore } from "../../../firebase";
 import Reservation from "../../../interfaces/Reservation";
@@ -56,7 +56,7 @@ const MyReservations: React.FC = () => {
   };
 
   return (
-    <div style={{width: 800}}>
+    <div style={{ width: 800 }}>
       <Row>
         <Col span={19}>
           <Title level={4}>My Reservations</Title>
