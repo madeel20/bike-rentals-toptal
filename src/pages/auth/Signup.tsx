@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { message } from "antd";
+import { message, Row } from "antd";
 import { useHistory } from "react-router-dom";
 import { auth } from "../../firebase";
 import firebase from "firebase";
@@ -36,9 +36,14 @@ export default function SignUpPage() {
   };
 
   return (
-    <>
-      <Title>Sign UP</Title>
-      <UserFormFields onFinish={onFinish} loading={loading} />
-    </>
+    <Row style={{ flexDirection: "column" }}>
+      <Row>
+        <Title>Sign UP</Title>
+      </Row>
+
+      <Row>
+        <UserFormFields onFinish={onFinish} loading={loading} />
+      </Row>
+    </Row>
   );
 }
