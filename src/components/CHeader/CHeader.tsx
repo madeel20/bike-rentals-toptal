@@ -31,16 +31,16 @@ function CHeader() {
           React Bike Rentals
         </Title>
       </Link>
-      <Row align="middle">
-        <Typography style={{ color: "white", marginRight: 20 }}>
-          <b>{auth.currentUser?.displayName}</b> ( {auth.currentUser?.email} )
-        </Typography>
-        {auth.currentUser && (
+      {auth.currentUser && (
+        <Row align="middle">
+          <Typography style={{ color: "white", marginRight: 20 }}>
+            <b>{auth.currentUser?.displayName}</b> ( {auth.currentUser?.email} )
+          </Typography>
           <Dropdown overlay={menu} placement="bottomLeft" arrow>
             <Avatar size="large" icon={<UserOutlined />} />
           </Dropdown>
-        )}
-      </Row>
+        </Row>
+      )}
     </Header>
   );
 }
