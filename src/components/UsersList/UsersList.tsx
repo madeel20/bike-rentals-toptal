@@ -6,6 +6,7 @@ import type { FilterConfirmProps } from "antd/es/table/interface";
 import { CheckboxChangeEvent } from "antd/lib/checkbox";
 import React, { useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
+import { auth } from "../../firebase";
 import User from "../../interfaces/User";
 import UserForm from "../UserForm/UserForm";
 
@@ -15,10 +16,7 @@ interface BikesListProps {
   loading: boolean;
   usersList: User[];
   onAction: () => any;
-  handleChangeRole?: (
-    event: CheckboxChangeEvent,
-    user: User
-  ) => any;
+  handleChangeRole?: (event: CheckboxChangeEvent, user: User) => any;
   handleDeleteAUser?: (uid: string) => any;
 }
 
@@ -27,7 +25,7 @@ const UsersList: React.FC<BikesListProps> = ({
   usersList,
   onAction,
   handleChangeRole,
-  handleDeleteAUser
+  handleDeleteAUser,
 }) => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
@@ -48,9 +46,7 @@ const UsersList: React.FC<BikesListProps> = ({
     setSearchText("");
   };
 
-  const getColumnSearchProps = (
-    dataIndex: DataIndex
-  ): ColumnType<User> => ({
+  const getColumnSearchProps = (dataIndex: DataIndex): ColumnType<User> => ({
     filterDropdown: ({
       setSelectedKeys,
       selectedKeys,
@@ -145,17 +141,18 @@ const UsersList: React.FC<BikesListProps> = ({
       title: "Manager",
       dataIndex: "isManager",
       key: "isManager",
-      sorter: (a, b) => (a.isManager === b.isManager ? 0 : a.isManager ? -1 : 1),
+      sorter: (a, b) =>
+        a.isManager === b.isManager ? 0 : a.isManager ? -1 : 1,
       sortDirections: ["descend", "ascend"],
       render: (isManager, record) => {
         return (
           <Checkbox
-          onChange={(event) =>
-            handleChangeRole &&
-            handleChangeRole(event, record)
-          }
-          checked={isManager}
-        />
+            onChange={(event) =>
+              handleChangeRole && handleChangeRole(event, record)
+            }
+            checked={isManager}
+            disabled={record.uid === auth.currentUser?.uid}
+          />
         );
       },
     },
@@ -163,23 +160,26 @@ const UsersList: React.FC<BikesListProps> = ({
       title: "",
       dataIndex: "edit&delete",
       key: "edit&delete",
-      render: (available, record) => (
-        <Row wrap={false} gutter={10} align="middle">
-          <UserForm user={record} callback={onAction} />
-          <Popconfirm
-            placement="top"
-            title={"Are you sure you want to delete this User?"}
-            onConfirm={() => handleDeleteAUser && handleDeleteAUser(record.uid!)}
-            okText="Yes"
-            cancelText="No"
-          >
-            <Button type="link" style={{ color: "red" }}>
-              Delete
-            </Button>
-          </Popconfirm>
-        </Row>
-      ),
-    }
+      render: (available, record) =>
+        record.uid !== auth.currentUser?.uid && (
+          <Row wrap={false} gutter={10} align="middle">
+            <UserForm user={record} callback={onAction} />
+            <Popconfirm
+              placement="top"
+              title={"Are you sure you want to delete this User?"}
+              onConfirm={() =>
+                handleDeleteAUser && handleDeleteAUser(record.uid!)
+              }
+              okText="Yes"
+              cancelText="No"
+            >
+              <Button type="link" style={{ color: "red" }}>
+                Delete
+              </Button>
+            </Popconfirm>
+          </Row>
+        ),
+    },
   ];
 
   return (
