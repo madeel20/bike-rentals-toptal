@@ -1,16 +1,26 @@
-const admin = require('firebase-admin');
+const admin = require("firebase-admin");
 
 /**
  * @description - Verifies firebase authorization token on each request
  */
 async function firebaseAuth(req, res, next) {
   try {
-    req.token = await admin.auth().verifyIdToken(req.headers['authorization']);
+    let token = await admin.auth().verifyIdToken(req.headers["authorization"]);
+
+    // Lookup the user associated with the specified uid.
+    let userRecord = await admin
+      .auth()
+      .getUser(token.uid);
+
+    if (!userRecord.customClaims.isManager)
+      res.status(401).json({ error: { code: "unauthenticated" } });
+
+    req.token = token;
+
     next();
   } catch (err) {
-    res
-      .status(401)
-      .json({ error: { code: 'unauthenticated' } });
+    console.log(err)
+    res.status(401).json({ error: { code: "unauthenticated" } });
   }
 }
 
